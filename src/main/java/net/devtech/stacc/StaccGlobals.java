@@ -1,8 +1,7 @@
 package net.devtech.stacc;
 
 import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.util.registry.Registry;
 
 public final class StaccGlobals {
 	public static final ThreadLocal<Long> COUNT = ThreadLocal.withInitial(() -> 0L);
@@ -12,7 +11,7 @@ public final class StaccGlobals {
 
 	// ideally this would use a callback, but I am lazy
 	public static int getMax() {
-		Registry<Item> items = Registries.ITEM;
+		Registry<Item> items = Registry.ITEM;
 		int size = items.getIds().size(), max;
 		if (lastSize != size) {
 			StaccGlobals.max = max = items.stream().mapToInt(Item::getMaxCount).max().orElse(0);

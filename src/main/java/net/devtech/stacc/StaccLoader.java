@@ -10,13 +10,13 @@ import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -81,7 +81,7 @@ public class StaccLoader implements ModInitializer {
 								}
 							}
 						} catch (IOException e) {
-							throw rethrow(new IOException("Invalid stack:config.json in pack \"%s\", format is {\"item:id\": 43, \"item:id2\": 5785, ...}!".formatted(resource.getPack().getName()), e));
+							throw rethrow(new IOException("Invalid stack:config.json in pack \"%s\", format is {\"item:id\": 43, \"item:id2\": 5785, ...}!".formatted(resource.getResourcePackName()), e));
 						}
 					}
 					return stackSizes;
@@ -90,7 +90,7 @@ public class StaccLoader implements ModInitializer {
 					for (var entry : u.entrySet()) {
 						Identifier key = entry.getKey();
 						Integer value = entry.getValue();
-						Item item = Registries.ITEM.get(key);
+						Item item = Registry.ITEM.get(key);
 						originalSizes.putIfAbsent(item, item.getMaxCount());
 						restore.remove(item);
 						if(item == Items.AIR) {
