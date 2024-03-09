@@ -35,45 +35,47 @@ jar {
 
 // configure the maven publication
 publishing {
+    def ENV = System.getenv()
+
     publications {
         mavenJava(MavenPublication) {
-            from(components["java"])
+            from components.java
         }
     }
     // select the repositories you want to publish to
     repositories {
         maven {
-            url(project.findProperty('maven_url'))
+            url ENV.MAVEN_URL
             credentials {
-                username(project.findProperty('maven_username'))
-                password(project.findProperty('maven_password'))
+                username ENV.MAVEN_USER
+                password ENV.MAVEN_PASSWORD
             }
         }
     }
 }
 
-unifiedPublishing {
-    project {
-        gameVersions = [minecraft_version]
-        gameLoaders = ["fabric"]
-
-        mainPublication tasks.remapJar
-        //secondaryPublication tasks.remapSourcesJar
-
-        var cfToken = project.findProperty("cf_token")
-        if (cfToken != null) {
-            curseforge {
-                token = cfToken
-                id = "820136"
-            }
-        }
-
-        var mrToken = project.findProperty("mr_token")
-        if (mrToken != null) {
-            modrinth {
-                token = mrToken
-                id = "fauLGdJR"
-            }
-        }
-    }
-}
+//unifiedPublishing {
+//    project {
+//        gameVersions = [minecraft_version]
+//        gameLoaders = ["fabric"]
+//
+//        mainPublication tasks.remapJar
+//        //secondaryPublication tasks.remapSourcesJar
+//
+//        var cfToken = project.findProperty("cf_token")
+//        if (cfToken != null) {
+//            curseforge {
+//                token = cfToken
+//                id = "820136"
+//            }
+//        }
+//
+//        var mrToken = project.findProperty("mr_token")
+//        if (mrToken != null) {
+//            modrinth {
+//                token = mrToken
+//                id = "fauLGdJR"
+//            }
+//        }
+//    }
+//}
